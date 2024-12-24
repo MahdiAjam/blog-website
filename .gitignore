@@ -1,0 +1,59 @@
+# Python files
+*.py[cod]
+__pycache__/
+*.so
+
+# Packages
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+var/
+sdist/
+develop-eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+.Python
+env/
+venv/
+ENV/
+ENV*/
+*.sqlite3
+.DS_Store
+
+# macOS
+*.DS_Store
+
+# MySQL
+*.sql
+
+# Virtualenv
+venv/
+ENV/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Static and media files
+staticfiles/
+media/
+
+# Local settings
+local_settings.py
