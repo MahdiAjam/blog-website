@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # third-party apps
     'ckeditor',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
