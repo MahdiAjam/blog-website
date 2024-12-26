@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
 
 class ContactUs(models.Model):
     name = models.CharField(max_length=100)
@@ -27,3 +27,19 @@ class ContactInformationPhone(models.Model):
 
     def __str__(self):
         return f'{self.phone}'
+
+class AboutUs(models.Model):
+    image = models.ImageField(upload_to='about/images/')
+    description = RichTextField()
+
+    def __str__(self):
+        return 'this is the about us'
+
+class AboutUsAddition(models.Model):
+    contact = models.ForeignKey(AboutUs, on_delete=models.CASCADE, related_name='additions')
+    title = models.CharField(max_length=100)
+    description = RichTextField()
+    image = models.ImageField(upload_to='about/images/')
+
+    def __str__(self):
+        return f'{self.title}'

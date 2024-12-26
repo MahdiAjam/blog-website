@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import ContactInformation
+from .models import ContactInformation, AboutUs
 from .forms import ContactUsForm
 from django.contrib import messages
 
@@ -9,8 +9,11 @@ class HomeView(View):
         return render(request, 'home/home.html')
 
 class AboutView(View):
+    template_name = 'home/about.html'
+
     def get(self, request):
-        return render(request, 'home/about.html')
+        about_us = AboutUs.objects.all()
+        return render(request, self.template_name, {'about': about_us})
 
 class ContactView(View):
     form_class = ContactUsForm
