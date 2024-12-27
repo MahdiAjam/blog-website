@@ -35,6 +35,9 @@ class ArticleTags(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('article:article tag', args=[self.slug,])
+
     def __str__(self):
         return f'{self.title}'
 
