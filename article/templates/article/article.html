@@ -54,8 +54,8 @@
                                                     <div class="col-lg-12">
                                                         <ul class="post-tags">
                                                             <li><i class="fa fa-tags"></i></li>
-                                                            {% for tag in i.tag.all %}
-                                                                <li><a href="#">{{ tag.title }}</a>,</li>
+                                                            {% for tags in i.tag.all %}
+                                                                <li><a href="{{ tags.get_absolute_url }}">{{ tags.title }}</a>,</li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>
