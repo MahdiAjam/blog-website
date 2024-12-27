@@ -10,7 +10,7 @@ class ContactInformationAdmin(admin.ModelAdmin):
 
 class AboutUsAdditionInline(admin.TabularInline):
     model = models.AboutUsAddition
-    extra = 2
+    extra = 1
 
 class AboutUsAdmin(admin.ModelAdmin):
     inlines = [AboutUsAdditionInline]

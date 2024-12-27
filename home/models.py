@@ -30,7 +30,7 @@ class ContactInformationPhone(models.Model):
 
 class AboutUs(models.Model):
     image = models.ImageField(upload_to='about/images/')
-    description = RichTextField()
+    description = RichTextField
 
     def __str__(self):
         return 'this is the about us'
