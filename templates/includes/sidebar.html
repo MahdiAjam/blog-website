@@ -17,10 +17,11 @@
                     </div>
                     <div class="content">
                         <ul>
-                            {% for i in articles %}
+                            {% for i in articles|slice:':3' %}
                                 <li><a href="{{ i.get_absolute_url }}">
                                     <h5>{{ i.title }}</h5>
                                     <span>{{ i.created|date }}</span>
+                                    <span>{{ i.author }}</span>
                                 </a></li>
                             {% endfor %}
                         </ul>
