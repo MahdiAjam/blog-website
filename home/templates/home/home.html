@@ -60,7 +60,7 @@
                                                 <li><a href="#">{{ i.created|date }}</a></li>
                                                 <li><a href="#">12 Comments</a></li>
                                             </ul>
-                                            <p>{{ i.description }}</p>
+                                            <p>{{ i.description|truncatewords:50|safe}}</p>
                                             <div class="post-options">
                                                 <div class="row">
                                                     <div class="col-6">
