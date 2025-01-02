@@ -37,6 +37,8 @@
     <!-- Ad Banner start Here -->
     {% include 'includes/Adbaner.html' %}
     <!-- Ad Banner Ends Here -->
+    <br>
+    {% include 'includes/messages.html' %}
 
     <section class="blog-posts">
         <div class="container">
@@ -60,7 +62,7 @@
                                                 <li><a href="#">{{ i.created|date }}</a></li>
                                                 <li><a href="#">12 Comments</a></li>
                                             </ul>
-                                            <p>{{ i.description|truncatewords:50|safe}}</p>
+                                            <p>{{ i.description|truncatewords:50|safe }}</p>
                                             <div class="post-options">
                                                 <div class="row">
                                                     <div class="col-6">

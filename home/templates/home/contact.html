@@ -6,6 +6,7 @@
 {% block content %}
     <!-- Page Content -->
     <!-- Banner Starts Here -->
+
     <div class="heading-page header-text">
         <section class="page-heading">
             <div class="container">
@@ -21,10 +22,11 @@
         </section>
     </div>
     <!-- Banner Ends Here -->
-
     <!-- Ad Banner start Here -->
     {% include 'includes/Adbaner.html' %}
     <!-- Ad Banner Ends Here -->
+    <br>
+    {% include 'includes/messages.html' %}
 
     <section class="contact-us">
         <div class="container">
@@ -88,7 +90,7 @@
                                         <div class="content">
                                             <ul>
                                                 <li>
-                                                <span>PHONE NUMBER</span>
+                                                    <span>PHONE NUMBER</span>
                                                     {% for phone in i.phones.all %}
                                                         <h5>{{ phone.phone }}</h5>
                                                     {% endfor %}
