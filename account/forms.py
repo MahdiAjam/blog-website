@@ -38,3 +38,7 @@ class RegisterForm(forms.Form):
     phone_number = forms.CharField(max_length=11)
     full_name = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)
+
+class VerifyCodeForm(forms.Form):
+    code = forms.IntegerField()
+
