@@ -24,4 +24,3 @@ class ArticleDetailView(View):
         article = get_object_or_404(Article, slug=article_slug)
         return render(request, 'article/detail.html', {'article': article})
 
-
