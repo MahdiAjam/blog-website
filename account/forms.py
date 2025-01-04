@@ -34,7 +34,7 @@ class UserChangeForm(forms.ModelForm):
         fields = ('email', 'phone_number', 'full_name', 'password', 'last_login')
 
 
-class RegisterForm(forms.Form):
+class UserRegisterForm(forms.Form):
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=11)
     full_name = forms.CharField(max_length=100)
@@ -55,3 +55,8 @@ class RegisterForm(forms.Form):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
+
+
+class UserLoginForm(forms.Form):
+    phone = forms.CharField(max_length=11)
+    password = forms.CharField(widget=forms.PasswordInput)

@@ -35,9 +35,18 @@
                     <li class="nav-item {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'home:contact' %}">Contact Us</a>
                     </li>
-                    <li class="nav-item {% if request.resolver_match.url_name == 'register' %}active{% endif %}">
-                        <a class="nav-link" href="{% url 'account:register' %}">Register</a>
-                    </li>
+                    {% if request.user.is_authenticated%}
+                        <li class="nav-item {% if request.resolver_match.url_name == 'user logout' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'account:user logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item {% if request.resolver_match.url_name == 'user register' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'account:user register' %}">Register</a>
+                        </li>
+                        <li class="nav-item {% if request.resolver_match.url_name == 'user login' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'account:user login' %}">Login</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
