@@ -21,7 +21,7 @@
                                 </div>
                                 <a href="{{ i.get_absolute_url }}"><h4>{{ i.title }}</h4></a>
                                 <ul class="post-info">
-                                    <li><a href="#">{{ i.author }}</a></li>
+                                    <li><a href="{% url 'account:user profile' i.author.id %}">{{ i.author }}</a></li>
                                     <li><a href="#">{{ i.created|date }}</a></li>
                                     <li><a href="#">12 Comments</a></li>
                                 </ul>
@@ -58,7 +58,7 @@
                                             <span>{{ i.category }}</span>
                                             <a href="{{ i.get_absolute_url }}"><h4>{{ i.title }}</h4></a>
                                             <ul class="post-info">
-                                                <li><a href="#">{{ i.author }}</a></li>
+                                                <li><a href="{% url 'account:user profile' i.author.id %}">{{ i.author }}</a></li>
                                                 <li><a href="#">{{ i.created|date }}</a></li>
                                                 <li><a href="#">12 Comments</a></li>
                                             </ul>

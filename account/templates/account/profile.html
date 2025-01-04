@@ -3,12 +3,13 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+    <!-- Page Content -->
     <!-- Banner Starts Here -->
     <div class="heading-page header-text">
         <section class="page-heading">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="text-content">
                             <h4>Your profile</h4>
                             <h2>{{ user.full_name }}</h2>
@@ -19,14 +20,83 @@
         </section>
     </div>
     <!-- Banner Ends Here -->
+
+    <!-- Ad Banner start Here -->
+    {% include 'includes/Adbaner.html' %}
+    <!-- Ad Banner Ends Here -->
     <br>
     {% include 'includes/messages.html' %}
-    <br>
 
-    <div class="card">
-        {% for i in article %}
-            <a href="{{ i.get_absolute_url }}" class="card-body">{{ i.title|truncatewords:5 }}</a>
-            <p>{{ i.description|truncatewords:10|safe }}</p>
-        {% endfor %}
-    </div>
+
+    <section class="blog-posts grid-system">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            {% for i in article %}
+                                <div class="col-lg-6">
+                                    <div class="blog-post">
+                                        <a href="{{ i.get_absolute_url }}">
+                                            <div class="blog-thumb">
+                                                <img src="{{ i.image.url }}" alt="">
+                                            </div>
+                                        </a>
+                                        <div class="down-content">
+                                            <span>{{ i.category }}</span>
+                                            <a href="{{ i.get_absolute_url }}"><h4>{{ i.title }}</h4></a>
+                                            <ul class="post-info">
+                                                <li><a href="{% url 'account:user profile' i.author.id %}">{{ i.author }}</a></li>
+                                                <li><a href="#">{{ i.created|date }}</a></li>
+                                                <li><a href="#">12 Comments</a></li>
+                                            </ul>
+                                            <p>{{ i.description|truncatewords:30|safe }}</p>
+                                            <div class="post-options">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <ul class="post-tags">
+                                                            <li><i class="fa fa-tags"></i></li>
+                                                            {% for tags in i.tag.all %}
+                                                                <li>
+                                                                    <a href="{{ tags.get_absolute_url }}">{{ tags.title }}</a>,
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="col-lg-12">
+                                <ul class="page-numbers">
+                                    {% if articles.has_previous %}
+                                        <li><a href="?page=1">First</a></li>
+                                        <li><a href="?page={{ articles.previous_page_number }}"><i
+                                                class="fa fa-angle-double-left"></i></a></li>
+                                    {% endif %}
+
+                                    {% for page_num in articles.paginator.page_range %}
+                                        {% if page_num == articles.number %}
+                                            <li class="active"><a href=?page{{ page_num }}">{{ page_num }}</a></li>
+                                        {% else %}
+                                            <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if articles.has_next %}
+                                        <li><a href="?page={{ articles.next_page_number }}"><i
+                                                class="fa fa-angle-double-right"></i></a></li>
+                                        <li><a href="?page={{ articles.paginator.num_pages }}">Last</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'includes/sidebar.html' %}
+            </div>
+        </div>
+    </section>
 {% endblock %}

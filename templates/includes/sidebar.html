@@ -21,7 +21,7 @@
                                 <li><a href="{{ i.get_absolute_url }}">
                                     <h5>{{ i.title }}</h5>
                                     <span>{{ i.created|date }}</span>
-                                    <span>{{ i.author }}</span>
+                                    <a href="{% url 'account:user profile' i.author.id %}">{{ i.author }}</a>
                                 </a></li>
                             {% endfor %}
                         </ul>

@@ -42,9 +42,9 @@
                                     </div>
                                     <div class="down-content">
                                         <span>{{ article.category }}</span>
-                                        <a href="post-details.html"><h4>{{ article.title }}</h4></a>
+                                        <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
                                         <ul class="post-info">
-                                            <li><a href="#">{{ article.author }}</a></li>
+                                            <li><a href="{% url 'account:user profile' article.author.id %}">{{ article.author }}</a></li>
                                             <li><a href="#">{{ article.updated|date }}</a></li>
                                             <li><a href="#">10 Comments</a></li>
                                         </ul>
