@@ -29,10 +29,7 @@ class RegisterView(View):
             }
             messages.success(request, 'we sent you the code', 'success')
             return redirect('account:verify_code')
-        else:
-            messages.error(request, 'your email or phone number is exists', 'danger')
-            return redirect('account:register')
-        return redirect('home:home')
+        return render(request, self.template_name, {'form': form})
 
 
 class RegisterVerifyCode(View):

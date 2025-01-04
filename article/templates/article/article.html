@@ -58,7 +58,9 @@
                                                         <ul class="post-tags">
                                                             <li><i class="fa fa-tags"></i></li>
                                                             {% for tags in i.tag.all %}
-                                                                <li><a href="{{ tags.get_absolute_url }}">{{ tags.title }}</a>,</li>
+                                                                <li>
+                                                                    <a href="{{ tags.get_absolute_url }}">{{ tags.title }}</a>,
+                                                                </li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>
@@ -70,10 +72,25 @@
                             {% endfor %}
                             <div class="col-lg-12">
                                 <ul class="page-numbers">
-                                    <li><a href="#">1</a></li>
-                                    <li class="active"><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                                    {% if articles.has_previous %}
+                                        <li><a href="?page=1">First</a></li>
+                                        <li><a href="?page={{ articles.previous_page_number }}"><i
+                                                class="fa fa-angle-double-left"></i></a></li>
+                                    {% endif %}
+
+                                    {% for page_num in articles.paginator.page_range %}
+                                        {% if page_num == articles.number %}
+                                            <li class="active"><a href=?page{{ page_num }}">{{ page_num }}</a></li>
+                                        {% else %}
+                                            <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if articles.has_next %}
+                                        <li><a href="?page={{ articles.next_page_number }}"><i
+                                                class="fa fa-angle-double-right"></i></a></li>
+                                        <li><a href="?page={{ articles.paginator.num_pages }}">Last</a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
