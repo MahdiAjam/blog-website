@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+        <section class="page-heading">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="text-content">
+                            <h4>Your profile</h4>
+                            <h2>{{ user.full_name }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Banner Ends Here -->
+    <br>
+    {% include 'includes/messages.html' %}
+    <br>
+
+    <div class="card">
+        {% for i in article %}
+            <a href="{{ i.get_absolute_url }}" class="card-body">{{ i.title|truncatewords:5 }}</a>
+            <p>{{ i.description|truncatewords:10|safe }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

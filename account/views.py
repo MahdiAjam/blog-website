@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm
 from .models import OtpCode, User
+from article.models import Article
 import random
 from utils import send_otp_code
 from django.contrib import messages
@@ -104,3 +105,12 @@ class UserLogoutView(LoginRequiredMixin, View):
         logout(request)
         messages.success(request, 'you logged out successfully', 'success')
         return redirect('home:home')
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    template_name = 'account/profile.html'
+
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
+        article = user.authors.all()
+        return render(request, self.template_name, {'user': user, 'article': article})
