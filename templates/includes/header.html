@@ -37,14 +37,21 @@
                     </li>
 
                     {% if request.user.is_authenticated %}
-                        <li class="nav-item {% if request.resolver_match.url_name == 'user profile' %}active{% endif %}">
-                            <a class="nav-link"
+                        <li class="nav-item dropdown {% if request.resolver_match.url_name == 'user profile' %}active{% endif %}">
+
+                            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false"
                                href="{% url 'account:user profile' request.user.id %}">
                                 <img src="{% static 'images/about-us.jpg' %}" width="30px" height="30px"
-                                     style="border-radius: 100%" alt=""> {{ user.full_name }}</a>
-                        </li>
-                        <li class="nav-item {% if request.resolver_match.url_name == 'user logout' %}active{% endif %}">
-                            <a class="nav-link" href="{% url 'account:user logout' %}">Logout</a>
+                                     style="border-radius: 100%" alt=""> {{ request.user.full_name }}</a>
+
+                            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'account:user edit profile' request.user.id %}">Edit Profile</a>
+                                <a class="dropdown-item" href="{% url 'account:user profile' request.user.id %}">Your Articles</a>
+                                <a class="dropdown-item" href="">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{% url 'account:user logout' %}">Logout</a>
+                            </div>
                         </li>
                     {% else %}
                         <li class="nav-item {% if request.resolver_match.url_name == 'user register' %}active{% endif %}">

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block content %}
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+        <section class="page-heading">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="text-content">
+                            <h4>You can Edit your profile</h4>
+                            <h2>Edit your Profile</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Banner Ends Here -->
+    <br>
+    {% include 'includes/messages.html' %}
+    <br>
+    <section class="contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="contact-form">
+                        <form id="register_form" action="" method="POST" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <fieldset>
+                                        {{ form.as_p }}
+                                    </fieldset>
+                                </div>
+                                <button type="submit" class="main-button">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

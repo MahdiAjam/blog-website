@@ -2,13 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm
 from .models import OtpCode, User
-from article.models import Article
 import random
 from utils import send_otp_code
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.core.paginator import Paginator
 
 class UserRegisterView(View):
     template_name = 'account/register.html'
@@ -111,6 +110,19 @@ class UserProfileView(LoginRequiredMixin, View):
     template_name = 'account/profile.html'
 
     def get(self, request, pk):
-        user = get_object_or_404(User, pk=pk)
-        article = user.authors.all()
-        return render(request, self.template_name, {'user': user, 'article': article})
+        author = get_object_or_404(User, pk=pk)
+        article = author.authors.all()
+        paginator = Paginator(article, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, self.template_name, {'author': author, 'article': page_obj})
+
+
+class UserEditProfileView(View):
+    template_name = 'account/edit_profile.html'
+
+    def get(self, request, pk=None):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        pass
