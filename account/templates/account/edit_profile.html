@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="contact-form">
-                        <form id="register_form" action="" method="POST" novalidate>
+                        <form id="register_form" action="" method="POST" novalidate  enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-lg-10">
@@ -36,7 +36,7 @@
                                         {{ form.as_p }}
                                     </fieldset>
                                 </div>
-                                <button type="submit" class="main-button">Register</button>
+                                <button type="submit" class="main-button">Edit</button>
                             </div>
                         </form>
                     </div>

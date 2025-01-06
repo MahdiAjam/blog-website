@@ -42,15 +42,26 @@
                             <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false"
                                href="{% url 'account:user profile' request.user.id %}">
-                                <img src="{% static 'images/about-us.jpg' %}" width="30px" height="30px"
-                                     style="border-radius: 100%" alt=""> {{ request.user.full_name }}</a>
+                                {% if user.image %}
+                                    <img src="{{ user.image.url }}" width="30px" height="30px"
+                                         style="border-radius: 100%"
+                                         alt="">
+                                {% else %}
+                                    <img src="{% static '/images/img.png' %}" width="30px" height="30px"
+                                         style="border-radius: 100%"
+                                         alt="">
+                                {% endif %}
+                                {{ request.user.full_name }}</a>
 
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'account:user edit profile' request.user.id %}">Edit Profile</a>
-                                <a class="dropdown-item" href="{% url 'account:user profile' request.user.id %}">Your Articles</a>
+                                <a class="dropdown-item"
+                                   href="{% url 'account:user edit profile' request.user.id %}">Edit Profile</a>
+                                <a class="dropdown-item" href="{% url 'account:user profile' request.user.id %}">Your
+                                    Articles</a>
                                 <a class="dropdown-item" href="">Settings</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="{% url 'account:user logout' %}">Logout</a>
+                                <a class="dropdown-item text-danger"
+                                   href="{% url 'account:user logout' %}">Logout</a>
                             </div>
                         </li>
                     {% else %}

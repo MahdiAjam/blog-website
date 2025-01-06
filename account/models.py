@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import UserManager
+from ckeditor.fields import RichTextField
 
 class User(AbstractBaseUser):
     # the password and last login are already exist
     email = models.EmailField(max_length=255, unique=True)
     phone_number = models.CharField(max_length=11, unique=True)
     full_name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='users/images/', null=True, blank=True)
+    description = RichTextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 

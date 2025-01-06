@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm
+from .forms import UserRegisterForm, VerifyCodeForm, UserLoginForm, UserEditProfileForm
 from .models import OtpCode, User
 import random
 from utils import send_otp_code
@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+
 
 class UserRegisterView(View):
     template_name = 'account/register.html'
@@ -76,6 +77,10 @@ class UserLoginView(View):
     template_name = 'account/login.html'
     form_class = UserLoginForm
 
+    def setup(self, request, *args, **kwargs):
+        self.next = request.GET.get('next')
+        return super().setup(request, *args, **kwargs)
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             messages.warning(request, 'you already logged in.', 'warning')
@@ -94,6 +99,8 @@ class UserLoginView(View):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'you logged in successfully', 'success')
+                if self.next:
+                    return redirect(self.next)
                 return redirect('home:home')
             messages.error(request, 'your phone or password are wrong', 'warning')
         return render(request, self.template_name, {'form': form})
@@ -118,11 +125,18 @@ class UserProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'author': author, 'article': page_obj})
 
 
-class UserEditProfileView(View):
+class UserEditProfileView(LoginRequiredMixin, View):
     template_name = 'account/edit_profile.html'
+    form_class = UserEditProfileForm
 
     def get(self, request, pk=None):
-        return render(request, self.template_name)
+        form = self.form_class(instance=request.user)
+        return render(request, self.template_name, {'form': form})
 
-    def post(self, request):
-        pass
+    def post(self, request, pk=None):
+        form = self.form_class(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile edited successfully', 'success')
+            return redirect('account:user profile', request.user.id)
+        return render(request, self.template_name, {'form': form})

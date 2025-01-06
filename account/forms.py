@@ -10,7 +10,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'phone_number', 'full_name')
+        fields = ('email', 'phone_number', 'full_name', 'image', 'description')
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -60,3 +60,9 @@ class VerifyCodeForm(forms.Form):
 class UserLoginForm(forms.Form):
     phone = forms.CharField(max_length=11)
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class UserEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email', 'phone_number', 'full_name', 'image', 'description')
