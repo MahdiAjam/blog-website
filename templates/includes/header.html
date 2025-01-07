@@ -58,7 +58,7 @@
                                    href="{% url 'account:user edit profile' request.user.id %}">Edit Profile</a>
                                 <a class="dropdown-item" href="{% url 'account:user profile' request.user.id %}">Your
                                     Articles</a>
-                                <a class="dropdown-item" href="">Settings</a>
+                                <a class="dropdown-item" href="{% url 'article:article create' %}">Create</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-danger"
                                    href="{% url 'account:user logout' %}">Logout</a>

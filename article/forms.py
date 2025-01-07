@@ -1,7 +1,8 @@
 from django import forms
 from .models import Article
 
-class ArticleUpdateForm(forms.ModelForm):
+
+class ArticleUpdateCreateForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ('title', 'category', 'tag', 'image', 'description', 'status')
+        fields = ('category', 'title', 'tag', 'image', 'description', 'status')

@@ -4,7 +4,7 @@ from .models import Article, Category, ArticleTags
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import ArticleUpdateForm
+from .forms import ArticleUpdateCreateForm
 
 
 class ArticleView(View):
@@ -32,6 +32,7 @@ class ArticleDetailView(View):
         article = get_object_or_404(Article, slug=article_slug)
         return render(request, 'article/detail.html', {'article': article})
 
+
 class ArticleDeleteView(LoginRequiredMixin, View):
     def get(self, request, article_id):
         article = Article.objects.get(pk=article_id)
@@ -45,7 +46,7 @@ class ArticleDeleteView(LoginRequiredMixin, View):
 
 
 class ArticleUpdateView(LoginRequiredMixin, View):
-    form_class = ArticleUpdateForm
+    form_class = ArticleUpdateCreateForm
     template_name = 'article/update.html'
 
     def setup(self, request, *args, **kwargs):
@@ -72,3 +73,22 @@ class ArticleUpdateView(LoginRequiredMixin, View):
             form.save()
             messages.success(request, 'your article updated successfully', 'success')
             return redirect('article:article detail', article.slug)
+
+
+class ArticleCreateView(LoginRequiredMixin, View):
+    form_class = ArticleUpdateCreateForm
+    template_name = 'article/create.html'
+
+    def get(self, request):
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            new_article = form.save(commit=False)
+            new_article.slug = form.cleaned_data['title']
+            new_article.author = request.user
+            new_article.save()
+            messages.success(request, 'your article created successfully', 'success')
+            return redirect('account:user profile')
