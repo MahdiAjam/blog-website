@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Article, Category, ArticleTags
 from django.core.paginator import Paginator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
 class ArticleView(View):
@@ -29,3 +31,13 @@ class ArticleDetailView(View):
         article = get_object_or_404(Article, slug=article_slug)
         return render(request, 'article/detail.html', {'article': article})
 
+class ArticleDeleteView(LoginRequiredMixin, View):
+    def get(self, request, article_id):
+        article = Article.objects.get(pk=article_id)
+        if article.author.id == request.user.id:
+            article.delete()
+            messages.success(request, 'Article deleted successfully', 'success')
+            return redirect('account:user profile', request.user.id)
+        else:
+            messages.error(request, 'You can not delete this article', 'danger')
+        return redirect('home:home')

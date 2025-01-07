@@ -44,7 +44,9 @@
                                         <span>{{ article.category }}</span>
                                         <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
                                         <ul class="post-info">
-                                            <li><a href="{% url 'account:user profile' article.author.id %}">{{ article.author }}</a></li>
+                                            <li>
+                                                <a href="{% url 'account:user profile' article.author.id %}">{{ article.author }}</a>
+                                            </li>
                                             <li><a href="#">{{ article.updated|date }}</a></li>
                                             <li><a href="#">10 Comments</a></li>
                                         </ul>
@@ -71,6 +73,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
+                            {% if request.user.id == article.author.id %}
+                                <a href="{% url 'article:article delete' article.id %}" class="btn btn-danger">Delete your Article</a>
+                                <a href="" class="btn btn-info">Edit your Article</a>
+                            {% endif %}
+                            <br>
                             <div class="col-lg-12">
                                 <div class="sidebar-item comments">
                                     <div class="sidebar-heading">
