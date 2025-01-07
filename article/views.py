@@ -4,6 +4,7 @@ from .models import Article, Category, ArticleTags
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from .forms import ArticleUpdateForm
 
 
 class ArticleView(View):
@@ -41,3 +42,33 @@ class ArticleDeleteView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'You can not delete this article', 'danger')
         return redirect('home:home')
+
+
+class ArticleUpdateView(LoginRequiredMixin, View):
+    form_class = ArticleUpdateForm
+    template_name = 'article/update.html'
+
+    def setup(self, request, *args, **kwargs):
+        self.article_instance = Article.objects.get(pk=kwargs['article_id'])
+        return super().setup(request, *args, **kwargs)
+
+    def dispatch(self, request, *args, **kwargs):
+        article = self.article_instance
+        if not article.author.id == request.user.id:
+            messages.error(request, 'you can not update this article', 'danger')
+            return redirect('home:home')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, article_id):
+        article = self.article_instance
+        form = self.form_class(instance=article)
+
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, article_id):
+        article = self.article_instance
+        form = self.form_class(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'your article updated successfully', 'success')
+            return redirect('article:article detail', article.slug)
