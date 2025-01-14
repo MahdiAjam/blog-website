@@ -8,7 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-
+from django.contrib.auth import views as auth_view
+from django.urls import reverse_lazy
 
 class UserRegisterView(View):
     template_name = 'account/register.html'
@@ -140,3 +141,19 @@ class UserEditProfileView(LoginRequiredMixin, View):
             messages.success(request, 'Profile edited successfully', 'success')
             return redirect('account:user profile', request.user.id)
         return render(request, self.template_name, {'form': form})
+
+
+class UserPasswordResetView(auth_view.PasswordResetView):
+    template_name = 'account/password_reset_form.html'
+    success_url = reverse_lazy('account:password reset done')
+    email_template_name = 'account/password_reset_email.html'
+
+class UserPasswordDoneView(auth_view.PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
+
+class UserPasswordResetConfirmView(auth_view.PasswordResetConfirmView):
+    template_name = 'account/password_reset_confirm.html'
+    success_url = reverse_lazy('account:password reset complete')
+
+class UserPasswordResetCompleteView(auth_view.PasswordResetCompleteView):
+    template_name = 'account/password_reset_complete.html'
