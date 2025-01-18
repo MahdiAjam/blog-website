@@ -4,8 +4,9 @@ from .models import Article, Category, ArticleTags
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import ArticleUpdateCreateForm
-
+from .forms import ArticleUpdateCreateForm, CommentCreateForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 class ArticleView(View):
     template_name = 'article/article.html'
@@ -28,9 +29,28 @@ class ArticleView(View):
 
 
 class ArticleDetailView(View):
+    form_class = CommentCreateForm
+
+    def setup(self, request, *args, **kwargs):
+        self.article_instance = get_object_or_404(Article, slug=kwargs['article_slug'])
+        return super().setup(request, *args, **kwargs)
+
     def get(self, request, article_slug=None):
-        article = get_object_or_404(Article, slug=article_slug)
-        return render(request, 'article/detail.html', {'article': article})
+        comments = self.article_instance.articlecomments.filter(is_reply=False)
+        return render(request, 'article/detail.html', {'article': self.article_instance, 'comments': comments,
+                                                       'form': self.form_class})
+
+    # for checking login
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.article = self.article_instance
+            new_comment.save()
+            messages.success(request, 'your comment submitted successfully', 'success')
+            return redirect('article:article detail', self.article_instance.slug)
 
 
 class ArticleDeleteView(LoginRequiredMixin, View):
