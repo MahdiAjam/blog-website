@@ -69,3 +69,14 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.author} - {self.title} - {self.category}'
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authorcomments')
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='articlecomments')
+    reply = models.ForeignKey('Comment', on_delete=models.CASCADE, related_name='replycomments', null=True, blank=True)
+    is_reply = models.BooleanField(default=False)
+    body = models.TextField(max_length=400)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.article} - {self.author} - {self.body[:30]}'
