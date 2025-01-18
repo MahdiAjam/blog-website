@@ -26,10 +26,16 @@
     <!-- Ad Banner start Here -->
     {% include 'includes/Adbaner.html' %}
     <!-- Ad Banner Ends Here -->
-    <br>
     {% include 'includes/messages.html' %}
     <section class="blog-posts grid-system">
         <div class="container">
+            {% if request.user.id != author.id and not is_following %}
+                <a href="{% url 'account:user follow' author.id %}" class="btn btn-info">Follow</a>
+            {% elif request.user.id != author.id and is_following %}
+                <a href="{% url 'account:user unfollow' author.id %}" class="btn btn-danger">Unfollow</a>
+            {% endif %}
+            <br>
+            <br>
             <div class="row">
                 <div class="col-lg-8">
                     <div class="all-blog-posts">
