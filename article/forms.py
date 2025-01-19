@@ -7,6 +7,7 @@ class ArticleUpdateCreateForm(forms.ModelForm):
         model = Article
         fields = ('category', 'title', 'tag', 'image', 'description', 'status')
 
+
 class CommentCreateForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -15,6 +16,7 @@ class CommentCreateForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control'})
         }
 
+
 class CommentReplyForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -22,3 +24,7 @@ class CommentReplyForm(forms.ModelForm):
         widgets = {
             'body': forms.Textarea(attrs={'class': 'form-control'})
         }
+
+
+class ArticleSearchForm(forms.Form):
+    search = forms.CharField()

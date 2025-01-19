@@ -4,16 +4,19 @@ from .models import Article, Category, ArticleTags, Comment
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import ArticleUpdateCreateForm, CommentCreateForm, CommentReplyForm
+from .forms import ArticleUpdateCreateForm, CommentCreateForm, CommentReplyForm, ArticleSearchForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
 class ArticleView(View):
     template_name = 'article/article.html'
+    form_class = ArticleSearchForm
 
     def get(self, request, category_slug=None, tag_slug=None):
         articles = Article.objects.filter(status=True)
+        if request.GET.get('search'):
+            articles = articles.filter(author__full_name__contains=request.GET['search'])
         paginator = Paginator(articles, 2)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
