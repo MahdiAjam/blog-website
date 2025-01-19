@@ -88,16 +88,15 @@
                                     </div>
                                     <div class="content">
                                         <ul>
-                                            <li>
-                                                {% for comment in comments %}
+                                            {% for comment in comments %}
+                                                <li>
                                                     {% if comment.author.image %}
                                                         <div class="author-thumb">
                                                             <img src="{{ comment.author.image.url }}" alt="">
                                                         </div>
                                                     {% else %}
                                                         <div class="author-thumb">
-                                                            <img src="{% static '/images/img.png' %}"
-                                                                 alt="">
+                                                            <img src="{% static '/images/img.png' %}" alt="">
                                                         </div>
                                                     {% endif %}
                                                     <div class="right-content">
@@ -105,20 +104,36 @@
                                                         </h4>
                                                         <p>{{ comment.body }}</p>
                                                     </div>
-                                                {% empty %}
-                                                    <p>No comments yet!</p>
-                                                {% endfor %}
-                                            </li>
-                                            <li class="replied">
-                                                <div class="author-thumb">
-                                                    <img src="{% static 'images/comment-author-02.jpg' %}" alt="">
-                                                </div>
-                                                <div class="right-content">
-                                                    <h4>Thirteen Man<span>May 20, 2020</span></h4>
-                                                    <p>In porta urna sed venenatis sollicitudin. Praesent urna sem,
-                                                        pulvinar vel mattis eget.</p>
-                                                </div>
-                                            </li>
+                                                </li>
+                                                {% with replies=comment.replycomments.all %}
+                                                    {% for reply in replies %}
+                                                        <li class="replied">
+                                                            {% if reply.author.image %}
+                                                                <div class="author-thumb">
+                                                                    <img src="{{ reply.author.image.url }}" alt="">
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="author-thumb">
+                                                                    <img src="{% static '/images/img.png' %}" alt="">
+                                                                </div>
+                                                            {% endif %}
+                                                            <div class="right-content">
+                                                                <h4>{{ reply.author }}<span>{{ reply.created|timesince }}</span>
+                                                                </h4>
+                                                                <p>{{ reply.body }}</p>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% endwith %}
+                                                {% if request.user.is_authenticated %}
+                                                    <form action="{% url 'article:comment reply' article.id comment.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        {{ reply_form.as_p }}
+                                                        <input type="submit" value="reply">
+                                                    </form>
+                                                {% endif %}
+                                                <br><hr>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>

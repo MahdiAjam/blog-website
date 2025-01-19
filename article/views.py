@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from .models import Article, Category, ArticleTags
+from .models import Article, Category, ArticleTags, Comment
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import ArticleUpdateCreateForm, CommentCreateForm
+from .forms import ArticleUpdateCreateForm, CommentCreateForm, CommentReplyForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+
 
 class ArticleView(View):
     template_name = 'article/article.html'
@@ -30,6 +31,7 @@ class ArticleView(View):
 
 class ArticleDetailView(View):
     form_class = CommentCreateForm
+    form_class_reply = CommentReplyForm
 
     def setup(self, request, *args, **kwargs):
         self.article_instance = get_object_or_404(Article, slug=kwargs['article_slug'])
@@ -38,7 +40,7 @@ class ArticleDetailView(View):
     def get(self, request, article_slug=None):
         comments = self.article_instance.articlecomments.filter(is_reply=False)
         return render(request, 'article/detail.html', {'article': self.article_instance, 'comments': comments,
-                                                       'form': self.form_class})
+                                                       'form': self.form_class, 'reply_form': self.form_class_reply})
 
     # for checking login
     @method_decorator(login_required)
@@ -112,3 +114,21 @@ class ArticleCreateView(LoginRequiredMixin, View):
             new_article.save()
             messages.success(request, 'your article created successfully', 'success')
             return redirect('account:user profile')
+
+
+class CommentReplyView(LoginRequiredMixin, View):
+    form_class = CommentReplyForm
+
+    def post(self, request, article_id, comment_id):
+        article = get_object_or_404(Article, id=article_id)
+        comment = get_object_or_404(Comment, id=comment_id)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.author = request.user
+            reply.article = article
+            reply.reply = comment
+            reply.is_reply = True
+            reply.save()
+            messages.success(request, 'your reply submitted successfully', 'success')
+        return redirect('article:article detail', article.slug)
