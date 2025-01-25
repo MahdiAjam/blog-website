@@ -56,7 +56,7 @@
                                                     <a href="{% url 'account:user profile' i.author.id %}">{{ i.author }}</a>
                                                 </li>
                                                 <li><a href="#">{{ i.created|date }}</a></li>
-                                                <li><a href="#">12 Comments</a></li>
+                                                <li><a href="#">{{ i.articlecomments.count }} comment</a></li>
                                             </ul>
                                             <p>{{ i.description|truncatewords:30|safe }}</p>
                                             <div class="post-options">

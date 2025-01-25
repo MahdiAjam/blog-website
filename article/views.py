@@ -116,7 +116,7 @@ class ArticleCreateView(LoginRequiredMixin, View):
             new_article.author = request.user
             new_article.save()
             messages.success(request, 'your article created successfully', 'success')
-            return redirect('account:user profile')
+            return redirect('account:user profile', new_article.author.id)
 
 
 class CommentReplyView(LoginRequiredMixin, View):
