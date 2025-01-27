@@ -2,6 +2,8 @@
 
 ## Overview
 This is my second Django project that is a feature-rich blogging platform that allows users to **register**, **log in**, **create** and **manage articles**, **comment**, and **reply to comments**. The platform is built using Django, providing a secure and scalable foundation for the application.
+### A demo of website
+https://github.com/user-attachments/assets/4c4d0cac-1abb-471b-832f-1b9eda97a1b2
 
 ## Features
 - **User Authentication**: The project implements Django's built-in authentication system, allowing users to securely register, log in, and log out.
